@@ -109,16 +109,27 @@ thead th { background: var(--bg); }
 tbody tr:hover { background: #f9fafb; }
 .empty { text-align: center; color: var(--muted); padding: 24px; }
 
-.result-box {
-    background: #0f172a;
-    color: #e2e8f0;
-    padding: 16px;
+.import-result { margin-top: 14px; }
+.import-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--success);
     border-radius: 8px;
-    font-family: "SF Mono", "Consolas", monospace;
-    font-size: 13px;
-    overflow-x: auto;
-    white-space: pre-wrap;
+    padding: 16px 18px;
 }
+.import-card.error { border-left-color: var(--danger); }
+.import-status { font-size: 15px; font-weight: 600; color: var(--success); }
+.import-card.error .import-status { color: var(--danger); }
+.import-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+.import-item { display: flex; flex-direction: column; gap: 4px; }
+.import-label { color: var(--muted); font-size: 12px; }
+.import-value { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.import-error { margin: 10px 0 0; color: var(--danger); line-height: 1.6; }
 
 .cards { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
 .cards .card {

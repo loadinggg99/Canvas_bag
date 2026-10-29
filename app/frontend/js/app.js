@@ -26,11 +26,6 @@ function fmtPercent(value) {
     return Number.isNaN(n) ? "-" : (n * 100).toFixed(2) + "%";
 }
 
-function showResult(el, data) {
-    el.textContent = JSON.stringify(data, null, 2);
-    el.hidden = false;
-}
-
 const $ = (id) => document.getElementById(id);
 
 function showFrontendError(message) {
@@ -209,21 +204,61 @@ async function loadFiles() {
     if (files.length === 0) select.innerHTML = '<option value="">没有可用文件</option>';
 }
 
+function renderImportSuccess(data) {
+    const el = $("import-result");
+    const rows = Number(data.imported_rows || 0).toLocaleString("zh-CN");
+
+    el.className = "import-result";
+    el.innerHTML = `
+        <div class="import-card success">
+            <div class="import-status">✓ 导入成功</div>
+            <div class="import-grid">
+                <div class="import-item">
+                    <div class="import-label">文件</div>
+                    <div class="import-value">${escapeHtml(data.filename || "-")}</div>
+                </div>
+                <div class="import-item">
+                    <div class="import-label">数据表</div>
+                    <div class="import-value">${escapeHtml(data.table_name || "-")}</div>
+                </div>
+                <div class="import-item">
+                    <div class="import-label">导入行数</div>
+                    <div class="import-value">${rows} 行</div>
+                </div>
+            </div>
+        </div>`;
+    el.hidden = false;
+}
+
+function renderImportError(message) {
+    const el = $("import-result");
+    el.className = "import-result";
+    el.innerHTML = `
+        <div class="import-card error">
+            <div class="import-status">✗ 导入失败</div>
+            <p class="import-error">${escapeHtml(message)}</p>
+        </div>`;
+    el.hidden = false;
+}
+
 $("btn-import").addEventListener("click", async () => {
     const filename = $("file-select").value;
     if (!filename) return;
     const btn = $("btn-import");
     btn.disabled = true;
     btn.textContent = "导入中……";
+    $("import-result").hidden = true;
     try {
         const result = await request("/api/import", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ filename }),
         });
-        showResult($("import-result"), { 状态: "成功", ...result });
+        renderImportSuccess(result);
+        productPage = 1;
+        loadProducts().catch(() => {});
     } catch (err) {
-        showResult($("import-result"), { 状态: "失败", 错误: err.message });
+        renderImportError(err.message || "未知错误");
     } finally {
         btn.disabled = false;
         btn.textContent = "开始导入";
