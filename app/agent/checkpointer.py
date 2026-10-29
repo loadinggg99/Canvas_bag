@@ -6,7 +6,6 @@
 
 import sqlite3
 import threading
-from contextlib import suppress
 from pathlib import Path
 
 from langgraph.checkpoint.memory import InMemorySaver
@@ -44,12 +43,3 @@ def get_checkpointer(storage_mode: str, db_path: Path):
     raise ValueError(
         f"未知的存储类型：{storage_mode!r}（可选 'RAM' / 'Sqlite'）"
     )
-
-
-def close_checkpointers() -> None:
-    """关闭并清空 SQLite 连接，测试或模拟进程重启时使用。"""
-    with _cache_lock:
-        while _sqlite_cache:
-            _, checkpointer = _sqlite_cache.popitem()
-            with suppress(Exception):
-                checkpointer.conn.close()

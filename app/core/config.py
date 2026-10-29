@@ -8,9 +8,11 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-TABLE_DIR = Path(__file__).resolve().parent.parent.parent / "data"
-ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
-DB_DIR = TABLE_DIR / "db"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+TABLE_DIR = DATA_DIR / "raw"
+ENV_FILE = PROJECT_ROOT / ".env"
+DB_DIR = DATA_DIR / "db"
 
 
 class MySQLConfig(BaseSettings):
@@ -32,7 +34,7 @@ class MySQLConfig(BaseSettings):
 
 
 class TableSettings(BaseModel):
-    """数据文件所在目录：当前 Excel 直接放在 data/ 下。"""
+    """原始数据文件所在目录：data/raw。"""
 
     table_path: Path = TABLE_DIR
 

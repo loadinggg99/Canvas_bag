@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Price_pilot_v1 · 波司登拼多多价格分析</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=20261030-3">
 </head>
 <body>
     <header class="topbar">
@@ -23,7 +23,7 @@
         <!-- 导入数据 -->
         <section id="tab-import" class="panel active">
             <h2>导入价格表</h2>
-            <p class="hint">从 data 目录选择一个文件导入（全量替换）。</p>
+            <p class="hint">从 data/raw 目录选择一个文件导入（全量替换）。</p>
             <div class="row">
                 <select id="file-select" aria-label="选择文件"></select>
                 <button id="btn-import" class="btn primary">开始导入</button>
@@ -64,8 +64,18 @@
             <h2>利润分析</h2>
             <div class="row">
                 <button id="btn-analytics" class="btn primary">分析</button>
+                <span id="analytics-status" class="hint" role="status"></span>
             </div>
             <div id="analytics-summary" class="cards"></div>
+
+            <div id="analytics-ai" class="ai-card" hidden>
+                <div class="ai-card-head">
+                    <h3>AI 利润分析</h3>
+                    <span id="analytics-ai-tools" class="hint"></span>
+                </div>
+                <div id="analytics-ai-content" class="ai-content"></div>
+            </div>
+
             <div class="table-wrap">
                 <table>
                     <thead>
@@ -107,6 +117,39 @@
         </section>
     </main>
 
-    <script src="/js/app.js"></script>
+    <!-- AI 对话侧边栏 -->
+    <button id="chat-toggle" class="chat-toggle" type="button"
+            aria-label="打开 AI 对话" aria-controls="chat-sidebar" aria-expanded="false">
+        AI 对话
+    </button>
+
+    <div id="chat-backdrop" class="chat-backdrop" hidden></div>
+
+    <aside id="chat-sidebar" class="chat-sidebar" aria-hidden="true" aria-label="AI 对话">
+        <div class="chat-header">
+            <div>
+                <h2>AI 助手</h2>
+                <p class="hint">查商品、看利润、模拟调价、检查风险</p>
+            </div>
+            <button id="chat-close" class="chat-close" type="button" aria-label="关闭对话">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages" aria-live="polite">
+            <div class="chat-message assistant">
+                <div class="chat-bubble">
+                    你好，我可以帮你查询商品、分析利润、模拟调价和检查定价风险。
+                    试试问：“查询 B20112320 的毛利率”。
+                </div>
+            </div>
+        </div>
+
+        <form id="chat-form" class="chat-form">
+            <textarea id="chat-input" rows="2" maxlength="4000"
+                      placeholder="输入问题，Enter 发送，Shift+Enter 换行"></textarea>
+            <button id="chat-send" class="btn primary" type="submit">发送</button>
+        </form>
+    </aside>
+
+    <script src="/js/app.js?v=20261030-3"></script>
 </body>
 </html>

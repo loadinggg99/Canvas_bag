@@ -31,12 +31,12 @@ SUPPORTED_SUFFIXES = {".xlsx", ".xls", ".csv"}
 
 
 def _safe_file_path(filename: str) -> Path:
-    """只允许读取 data/ 目录下的文件，防止 ../ 路径穿越。"""
+    """只允许读取 data/raw/ 目录下的文件，防止 ../ 路径穿越。"""
     base_dir = table_settings.table_path.resolve()
     file_path = (base_dir / filename).resolve()
 
     if file_path.parent != base_dir:
-        raise ValueError("文件名不合法，只能导入 data 目录下的文件")
+        raise ValueError("文件名不合法，只能导入 data/raw 目录下的文件")
 
     if not file_path.is_file():
         raise FileNotFoundError(f"找不到文件：{filename}")
@@ -159,7 +159,7 @@ def _replace_table(df: pd.DataFrame) -> None:
 
 
 def write_to_db(table_name: str = "波司登拼多多价格.xlsx") -> pd.DataFrame:
-    """读取 data/ 下的文件，校验后安全替换 test_price 表。"""
+    """读取 data/raw/ 下的文件，校验后安全替换 test_price 表。"""
     file_path = _safe_file_path(table_name)
 
     try:

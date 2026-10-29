@@ -1,6 +1,9 @@
 # app/main.py —— FastAPI 应用入口
 #
-# 启动命令（在项目根目录执行）：
+# 本地推荐从项目根目录启动：
+#   .venv/bin/python main.py
+#
+# 也可以直接使用 uvicorn：
 #   .venv/bin/python -m uvicorn app.main:app --reload
 #
 # 打开 http://127.0.0.1:8000/ 看前端，http://127.0.0.1:8000/docs 看接口文档。
@@ -35,6 +38,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def disable_frontend_cache(request, call_next):
+    """开发阶段不让浏览器缓存 HTML/JS/CSS。
+
+    否则改了 app.js 之后，页面仍可能执行旧代码，表现为“按钮没反应”。
+    生产环境如果改用带 hash 的静态资源，可以移除这个中间件。
+    """
+    response = await call_next(request)
+    path = request.url.path
+
+    if path in ("/", "/index.html") or path.startswith(("/js/", "/css/")):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+
+    return response
 
 
 @app.get("/health", tags=["系统"])

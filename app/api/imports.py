@@ -20,7 +20,7 @@ SUPPORTED_SUFFIXES = {".xlsx", ".xls", ".csv"}
 
 @router.get("/files", response_model=list[FileItem])
 def list_files():
-    """列出 data 目录下可导入的数据文件。"""
+    """列出 data/raw 目录下可导入的数据文件。"""
     table_dir = TableSettings().table_path
 
     if not table_dir.is_dir():
@@ -35,7 +35,7 @@ def list_files():
 
 @router.post("/import", response_model=ImportResult)
 def import_data(req: ImportRequest):
-    """把 data 目录下的文件导入数据库（调用 import_service.write_to_db）。"""
+    """把 data/raw 目录下的文件导入数据库（调用 import_service.write_to_db）。"""
     try:
         df = import_service.write_to_db(req.filename)
     except FileNotFoundError as exc:
