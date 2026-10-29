@@ -19,5 +19,3 @@ data/db/
 .vscode/
 .DS_Store
 *.log
-
-data/raw/*.xlsx
