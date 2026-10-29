@@ -1,0 +1,23 @@
+# 本地环境变量，绝不提交
+.env
+
+# Python 缓存与虚拟环境
+.venv/
+.uv-cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 本地数据库/检查点文件
+data/db/
+*.sqlite3
+
+# 编辑器与系统文件
+.idea/
+.vscode/
+.DS_Store
+*.log
+
+data/raw/*.xlsx

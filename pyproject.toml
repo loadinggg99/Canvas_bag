@@ -1,0 +1,30 @@
+[project]
+name = "Price_pilot_v1"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "loadinggg99", email = "ryc2_7182818@163.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.162.0",
+    "langchain[standard]>=1.4.7",
+    "openpyxl>=3.1.5",
+    "pandas>=3.1.0",
+    "pydantic>=2.14.1",
+    "pydantic-settings>=2.16.1",
+    "pymysql>=1.2.3",
+    "sqlalchemy>=2.1.6",
+]
+
+[project.scripts]
+price_pilot_v1 = "price_pilot_v1:main"
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[build-system]
+requires = ["uv_build>=0.12.15,<0.13.0"]
+build-backend = "uv_build"
