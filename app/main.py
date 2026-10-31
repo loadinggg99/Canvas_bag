@@ -59,7 +59,7 @@ async def disable_frontend_cache(request, call_next):
 
 
 @app.get("/health", tags=["系统"])
-def health():
+async def health():
     """健康检查（只表示进程还活着，不检查数据库）。"""
     return {"status": "ok"}
 
